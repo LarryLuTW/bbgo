@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/c9s/requestgen"
-
 	"github.com/c9s/bbgo/pkg/fixedpoint"
 	"github.com/c9s/bbgo/pkg/types"
 )
@@ -124,46 +122,4 @@ func (reward Reward) Reward() (*types.Reward, error) {
 
 type RewardService struct {
 	client *RestClient
-}
-
-func (s *RewardService) NewGetRewardsRequest() *GetRewardsRequest {
-	return &GetRewardsRequest{client: s.client}
-}
-
-func (s *RewardService) NewGetRewardsOfTypeRequest(pathType RewardType) *GetRewardsOfTypeRequest {
-	return &GetRewardsOfTypeRequest{client: s.client, pathType: &pathType}
-}
-
-//go:generate GetRequest -url "v2/rewards/:path_type" -type GetRewardsOfTypeRequest -responseType []Reward
-type GetRewardsOfTypeRequest struct {
-	client requestgen.AuthenticatedAPIClient
-
-	pathType *RewardType `param:"path_type,slug"`
-
-	// From Unix-timestamp
-	from *int64 `param:"from"`
-
-	// To Unix-timestamp
-	to *int64 `param:"to"`
-
-	page   *int64 `param:"page"`
-	limit  *int64 `param:"limit"`
-	offset *int64 `param:"offset"`
-}
-
-//go:generate GetRequest -url "v2/rewards" -type GetRewardsRequest -responseType []Reward
-type GetRewardsRequest struct {
-	client requestgen.AuthenticatedAPIClient
-
-	currency *string `param:"currency"`
-
-	// From Unix-timestamp
-	from *int64 `param:"from"`
-
-	// To Unix-timestamp
-	to *int64 `param:"to"`
-
-	page   *int64 `param:"page"`
-	limit  *int64 `param:"limit"`
-	offset *int64 `param:"offset"`
 }

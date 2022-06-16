@@ -46,8 +46,8 @@ func (g *GetRewardsOfTypeRequest) GetQueryParameters() (url.Values, error) {
 	var params = map[string]interface{}{}
 
 	query := url.Values{}
-	for k, v := range params {
-		query.Add(k, fmt.Sprintf("%v", v))
+	for _k, _v := range params {
+		query.Add(_k, fmt.Sprintf("%v", _v))
 	}
 
 	return query, nil
@@ -60,6 +60,17 @@ func (g *GetRewardsOfTypeRequest) GetParameters() (map[string]interface{}, error
 	if g.from != nil {
 		from := *g.from
 
+		// TEMPLATE check-valid-values
+		switch from {
+		case timeOffset, reqCount:
+			params["from"] = from
+
+		default:
+			return nil, fmt.Errorf("from value %v is invalid", from)
+
+		}
+		// END TEMPLATE check-valid-values
+
 		// assign parameter of from
 		params["from"] = from
 	} else {
@@ -67,6 +78,17 @@ func (g *GetRewardsOfTypeRequest) GetParameters() (map[string]interface{}, error
 	// check to field -> json key to
 	if g.to != nil {
 		to := *g.to
+
+		// TEMPLATE check-valid-values
+		switch to {
+		case timeOffset, reqCount:
+			params["to"] = to
+
+		default:
+			return nil, fmt.Errorf("to value %v is invalid", to)
+
+		}
+		// END TEMPLATE check-valid-values
 
 		// assign parameter of to
 		params["to"] = to
@@ -76,6 +98,17 @@ func (g *GetRewardsOfTypeRequest) GetParameters() (map[string]interface{}, error
 	if g.page != nil {
 		page := *g.page
 
+		// TEMPLATE check-valid-values
+		switch page {
+		case timeOffset, reqCount:
+			params["page"] = page
+
+		default:
+			return nil, fmt.Errorf("page value %v is invalid", page)
+
+		}
+		// END TEMPLATE check-valid-values
+
 		// assign parameter of page
 		params["page"] = page
 	} else {
@@ -84,6 +117,17 @@ func (g *GetRewardsOfTypeRequest) GetParameters() (map[string]interface{}, error
 	if g.limit != nil {
 		limit := *g.limit
 
+		// TEMPLATE check-valid-values
+		switch limit {
+		case timeOffset, reqCount:
+			params["limit"] = limit
+
+		default:
+			return nil, fmt.Errorf("limit value %v is invalid", limit)
+
+		}
+		// END TEMPLATE check-valid-values
+
 		// assign parameter of limit
 		params["limit"] = limit
 	} else {
@@ -91,6 +135,17 @@ func (g *GetRewardsOfTypeRequest) GetParameters() (map[string]interface{}, error
 	// check offset field -> json key offset
 	if g.offset != nil {
 		offset := *g.offset
+
+		// TEMPLATE check-valid-values
+		switch offset {
+		case timeOffset, reqCount:
+			params["offset"] = offset
+
+		default:
+			return nil, fmt.Errorf("offset value %v is invalid", offset)
+
+		}
+		// END TEMPLATE check-valid-values
 
 		// assign parameter of offset
 		params["offset"] = offset
@@ -109,13 +164,13 @@ func (g *GetRewardsOfTypeRequest) GetParametersQuery() (url.Values, error) {
 		return query, err
 	}
 
-	for k, v := range params {
-		if g.isVarSlice(v) {
-			g.iterateSlice(v, func(it interface{}) {
-				query.Add(k+"[]", fmt.Sprintf("%v", it))
+	for _k, _v := range params {
+		if g.isVarSlice(_v) {
+			g.iterateSlice(_v, func(it interface{}) {
+				query.Add(_k+"[]", fmt.Sprintf("%v", it))
 			})
 		} else {
-			query.Add(k, fmt.Sprintf("%v", v))
+			query.Add(_k, fmt.Sprintf("%v", _v))
 		}
 	}
 
@@ -148,24 +203,24 @@ func (g *GetRewardsOfTypeRequest) GetSlugParameters() (map[string]interface{}, e
 }
 
 func (g *GetRewardsOfTypeRequest) applySlugsToUrl(url string, slugs map[string]string) string {
-	for k, v := range slugs {
-		needleRE := regexp.MustCompile(":" + k + "\\b")
-		url = needleRE.ReplaceAllString(url, v)
+	for _k, _v := range slugs {
+		needleRE := regexp.MustCompile(":" + _k + "\\b")
+		url = needleRE.ReplaceAllString(url, _v)
 	}
 
 	return url
 }
 
-func (g *GetRewardsOfTypeRequest) iterateSlice(slice interface{}, f func(it interface{})) {
+func (g *GetRewardsOfTypeRequest) iterateSlice(slice interface{}, _f func(it interface{})) {
 	sliceValue := reflect.ValueOf(slice)
-	for i := 0; i < sliceValue.Len(); i++ {
-		it := sliceValue.Index(i).Interface()
-		f(it)
+	for _i := 0; _i < sliceValue.Len(); _i++ {
+		it := sliceValue.Index(_i).Interface()
+		_f(it)
 	}
 }
 
-func (g *GetRewardsOfTypeRequest) isVarSlice(v interface{}) bool {
-	rt := reflect.TypeOf(v)
+func (g *GetRewardsOfTypeRequest) isVarSlice(_v interface{}) bool {
+	rt := reflect.TypeOf(_v)
 	switch rt.Kind() {
 	case reflect.Slice:
 		return true
@@ -180,8 +235,8 @@ func (g *GetRewardsOfTypeRequest) GetSlugsMap() (map[string]string, error) {
 		return slugs, nil
 	}
 
-	for k, v := range params {
-		slugs[k] = fmt.Sprintf("%v", v)
+	for _k, _v := range params {
+		slugs[_k] = fmt.Sprintf("%v", _v)
 	}
 
 	return slugs, nil
